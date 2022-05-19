@@ -6,7 +6,7 @@ namespace medical_api.Repositories
 {
     public interface IPatientRepository
     {
-        Task<IEnumerable<Patient>> Get();
+        IEnumerable<Patient> Get();
         Task<Patient> Get(int id);
         Task<Patient> Create(Patient patient);
         Task Update(Patient patient);

@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using medical_api.Database;
 using medical_api.Models;
@@ -14,10 +16,13 @@ namespace medical_api.Repositories
         {
             _context = context;
         }
-        
-        public async Task<IEnumerable<Patient>> Get()
+
+        public IEnumerable<Patient> Get()
         {
-            return await _context.patients.ToListAsync();
+            var patient = _context.patients.Include(p => p.Diagnose)
+                .Include(p => p.Course);
+            
+            return patient.AsEnumerable();
         }
 
         public async Task<Patient> Get(int id)

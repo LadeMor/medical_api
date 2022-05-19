@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using medical_api.Models;
 using medical_api.Repositories;
@@ -19,9 +20,19 @@ namespace medical_api.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Patient>> GetPatients()
+        public async Task<IActionResult> GetPatients()
         {
-            return await _patientRepository.Get();
+            var patients = _patientRepository.Get();
+            var patientsModels = patients.Select(p=> new PatientsFull(){
+                id = p.id, 
+                name = p.name, 
+                surname = p.surname, 
+                arrivaldate = p.arrivaldate,
+                diagnosis = p.Diagnose.diagnosis_name, 
+                courses = p.Course.course_name
+                    
+            });
+            return Ok(patientsModels);
         }
 
         [HttpGet("{id}")]
@@ -36,7 +47,7 @@ namespace medical_api.Controllers
             return await _patientRepository.Create(patient);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public void DeletePatient(int id)
         {
             _patientRepository.Delete(id);
