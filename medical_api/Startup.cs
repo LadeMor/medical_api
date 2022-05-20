@@ -30,12 +30,21 @@ namespace medical_api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IPatientRepository, PatientRepository>();
+            services.AddScoped<IDiagnoseRepository, DiagnoseRepository>();
+            services.AddScoped<ICourseRepository, CourseRepository>();
             services.AddDbContext<MedicalContext>(o =>
                 o.UseNpgsql(Configuration.GetConnectionString("MedicalContext")));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "medical_api", Version = "v1"});
+            });
+            services.AddCors(option =>
+            {
+                option.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
             });
         }
 
@@ -52,6 +61,8 @@ namespace medical_api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            
+            app.UseCors();
 
             app.UseAuthorization();
 
