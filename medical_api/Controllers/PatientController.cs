@@ -42,9 +42,18 @@ namespace medical_api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Patient>> CreatePatient(Patient patient)
+        public async Task<IActionResult> CreatePatient(NewPatientModel newPatientModel)
         {
-            return await _patientRepository.Create(patient);
+            var patient = new Patient()
+            {
+                name = newPatientModel.name,
+                surname = newPatientModel.surname,
+                arrivaldate = newPatientModel.arrivaldate,
+                diagnosis = newPatientModel.diagnosis,
+                courses = newPatientModel.courses
+            };
+            await _patientRepository.Create(patient);
+            return Ok();
         }
 
         [HttpDelete("{id}")]

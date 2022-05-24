@@ -8,7 +8,7 @@ namespace medical_api.Repositories
     {
         IEnumerable<Patient> Get();
         Task<Patient> Get(int id);
-        Task<Patient> Create(Patient patient);
+        Task Create(Patient patient);
         Task Update(Patient patient);
         Task Delete(int id);
     }

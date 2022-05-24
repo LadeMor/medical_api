@@ -30,17 +30,15 @@ namespace medical_api.Repositories
             return await _context.patients.FindAsync(id);
         }
 
-        public async Task<Patient> Create(Patient patient)
+        public async Task Create(Patient patient)
         {
-            _context.patients.Add(patient);
+            await _context.patients.AddAsync(patient);
             await _context.SaveChangesAsync();
-
-            return patient;
         }
 
         public async Task Update(Patient patient)
         {
-            _context.Entry(patient).State = EntityState.Modified;
+            _context.patients.Update(patient);
             await _context.SaveChangesAsync();
         }
 
